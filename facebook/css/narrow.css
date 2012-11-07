@@ -1,0 +1,15 @@
+#footer{
+	margin: 15px auto;
+	border-radius: 10px;
+	font-family: 'The Girl Next Door', cursive;
+	background-color: transparent;
+	padding: 1em;
+	font-size: 1em;
+	
+	line-height: 1em;
+
+	overflow: visible;
+	
+	position: inherit;
+}
+
