@@ -474,30 +474,8 @@ $(document).ready( function( $ ){
                         //console.log(response);
                     }
 
-                    if( response.hometown.name != "Milwaukee, Wisconsin" && response.location.name != "Milwaukee, Wisconsin" ){
-                        console.log("User noted as out of Milwaukee, WI area.");
-                        var voteForMyTown = confirm("Please keep in mind that this app is currently catered to residents of the city of Milwaukee, WI USA. If you would like to have this application provide information for your town or area, please go ahead and vote for it by pressing the confirm button, otherwise just cancel and you will be returned to your regular Facebook experience. The towns you are from we've noticed, are: " + response.hometown.name + " and " + response.location.name + ". ");
-                        if( voteForMyTown ){
-                            $.get('vote.php', {
-                                'votePrimary': String( escape( response.location.name ) ),
-                                'voteHomeTown': String( escape( response.hometown.name ) ),
-                                'uid': String( response.username )
-                            }, function( responseToVote ){
-                                //need to figure out some useful response, for now...
-                                //store response as it originally was passed as a string
-                                var responseToVote = JSON.parse(responseToVote); //now silent
-								
-                                if( responseToVote.status == 'OK' ) alert('Your town has been recorded, the creator of this app will look into serving that area.');
-                                else alert('Something unusual happened, try reloading after clearing your browser cache; a vote for a location did not occur. If this issue continues, contact the creator of this app.');
-                                
-								console.log(responseToVote);
-                            });
-                        } else {
-                            //send them directly back to facebook
-                            //window.history.back(); //nah just send them to facebook
-                            top.location.href = "https://facebook.com"
-                        }
-                    }
+                    
+                    
 
                 });
 
