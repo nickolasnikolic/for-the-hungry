@@ -332,20 +332,20 @@ $(document).ready( function( $ ){
 						var to = destinations[ j ];
 
                         //report progress
-                        //console.log("Still spooling to jQuery object: " + from + " to " + to + " is " + distanceTo);
+                        if( persist.debug ) console.log("Still spooling to jQuery object: " + from + " to " + to + " is " + distanceTo);
 
                         //attach distances to original mealsites collection or replace if already exists
                         $( '.matchlist_panel' ).eq(j).append('<div id="distance"><p>Distance to this meal site is: <span id="findClosest">' + String( distanceTo ) + '</span></p></div>');
                     }
                 }
 
-                //console.log("Out of spool. Sorting elements...");
+                if( persist.debug ) console.log("Out of spool. Sorting elements...");
                 $( '.matchlist_panel' ).tsort('#findClosest');
 
                 //totally cheap method, but hide the rest... //@todo find a better method or rewrite sort... 
                 //Every sort plugin uses the jQuery DOM manipulation methods to sort, rather then just doing it in regular memory on the $()[] array
                 //And so they requires elements to be in the dom and is a bit restrictive because of it.
-                //console.log('displaying only first element');
+                if( persist.debug ) console.log('displaying only first element');
                 $( '.matchlist_panel:gt( 0 )' ).hide();
 
                 //finally, display the correct opener for the mealsite panel
@@ -371,7 +371,7 @@ $(document).ready( function( $ ){
 	if( !!persist.liveInfo.userAddress ){
 		try{
 			$( '#addressForm' ).val( persist.liveInfo.userAddress );
-			//console.log("Triggering #send click handler");
+			if( persist.debug ) console.log("Triggering #send click handler");
 			$( '#send' ).trigger('click');
 		}catch( error ){ console.log( error );}
 	}
@@ -383,7 +383,7 @@ $(document).ready( function( $ ){
 			if( event.which == 13 ){
 				event.stopImmediatePropagation();
 				event.preventDefault();
-				//console.log( event );
+				if( persist.debug == 'level2' || persist.debug == 'level3' ) console.log( event );
 				$( '#send' ).trigger( 'click' );
 			}
 		}catch( error ){ console.log( error ); }
@@ -400,12 +400,14 @@ $(document).ready( function( $ ){
             caption: 'I just donated to The Hunger Task Force!',
             description: 'You can be directed to the donation page of The Hunger Task Force, as well as other features such as being directed to your nearest Milwaukee area meal center using The Hunger App.'
         };
-        //console.log(sendToFeed);
+        if( persist.debug == 'level2' || persist.debug == 'level3' ) console.log(sendToFeed);
 
         function callback(response ){
             // log success
-            //console.log("In bragToFriends()");
-            //console.log(response['post_id']);
+            if( persist.debug == 'level2' || persist.debug == 'level3' ){
+            	console.log("In bragToFriends()");
+            	console.log(response['post_id']);
+            }
 
             //@todo react to failure, as well as notify user that feed post now exists.
         }
@@ -460,24 +462,24 @@ $(document).ready( function( $ ){
                 var uid = response.authResponse.userID;
                 var accessToken = response.authResponse.accessToken;
 
-                {
-                    //console.log("FB.authResponse follows on next line:");
-                    //console.log(response);
+                if( persist.debug == 'level2' || persist.debug == 'level3' ){
+                    console.log("FB.authResponse follows on next line:");
+                    console.log(response);
                 }
 
                 FB.api('/me', function(response ){
 
-                    if( persist.debug ){
-                        //console.log("You're already logged in and your name is " + response.name);
-                        //console.log("FB.api//me response follows on next line:");
-                        //console.log(response);
+                    if( persist.debug == 'level2' || persist.debug == 'level3' ){
+                        console.log("You're already logged in and your name is " + response.name);
+                        console.log("FB.api//me response follows on next line:");
+                        console.log(response);
                     }
                 });
                 
             } else if( response.status === 'not_authorized' ){ //user is logged in but hasn't permitted the app to function in their account
 
                 // not_authorized
-                //console.log("Recieved a response of not_authorized.");
+                if( persist.debug == 'level2' || persist.debug == 'level3' ) console.log("Recieved a response of not_authorized.");
                 //send users Facebook Authentication dialogue to login and redirect back to app thereafter
                 top.location.href = 'https://www.facebook.com/dialog/oauth?client_id=374687635931458&redirect_uri=https://apps.facebook.com/forthehungry/'
 
