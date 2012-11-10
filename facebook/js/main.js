@@ -8,27 +8,7 @@ $(document).ready( function( $ ){
 	persist.test();
 	persist.liveTest();
 	
-	//eventListener for value changes in localStorage
-	//@todo figure this event out... it's not telling me anything
-	$( document ).bind( 'storage', function( event  ){
-		console.log( event );
-	});
-	
-	//very heavily informed dom event listener
-    if( persist.debug == 'level3' ){
-        //set a event listener to report the items being put into the dom.
-        var thisDOMEventCounter = 0;
-        //only for debugging purposes
-        $( document ).bind( "DOMNodeInserted", function( event ){
-            console.log(thisDOMEventCounter + '----------------------------------------------------Event Target is:');
-            console.log(event.target);
-            console.log(thisDOMEventCounter + '----------------------------------------------------event.target.textContent is:');
-            console.log(event.target.textContent.replace(/(\r\n|\n|\r|\s+)/gm, " "));
-            console.log(thisDOMEventCounter + '----------------------------------------------------The whole Event object is:');
-            console.log(event);
-            thisDOMEventCounter++;
-        });
-    }
+
 	try{
 		//if we don't have the download already local, pull one
 		if( !persist.liveInfo.originalDownload ){
@@ -38,11 +18,9 @@ $(document).ready( function( $ ){
 				persist.liveInfo.originalDownload = data.replace(/(\r\n|\n|\r|\s+)/gm, " ").trim();
 				//display placeholder (temporary, but needed if either google or facebook api fail)
 				$( '#content > div > div:first' ).append( persist.liveInfo.originalDownload );
-				console.log( "downloading and appending remote file." );
 			});
 		} else {
 			//just use the local one
-			console.log( "reverting to localStorage download." );
 			$( '#content > div > div:first' ).append( persist.liveInfo.originalDownload );
 		}
 	}catch( error ){ console.log( error ) }
@@ -216,8 +194,6 @@ $(document).ready( function( $ ){
     //process downloaded document, and send to Google Maps to return a distance matrix
     //append distance matrix to appropriate elements in document, then sort by distance and display closest location
     $( '#send' ).click( function( ){
-        //console.log('Inside of #send click handler.');
-		
 		//first, check if the address to be requested is already here
         persist.liveInfo.userInput = $( '#addressForm' ).val();
 		
@@ -230,7 +206,7 @@ $(document).ready( function( $ ){
 			persist.liveInfo.userInput == '' ||
 			persist.liveInfo.userInput == 'Enter your address to find the closest Milwaukee Free Meal Site'
 			)
-			return console.log("Returning from handler, repeat or empty input found." );
+			return;
 
         //prepare for additional iterations (second or more times through here) through by resetting values to nothing then collecting values
         if( !!persist.liveInfo.returningUser ){
@@ -238,7 +214,6 @@ $(document).ready( function( $ ){
            if( persist.liveInfo.userAddress != persist.liveInfo.userInput ){
                 //if we get here, they are a returning user that has instigated a new search.
 				//we can't used saved data; flush everything related to google maps, we are starting over
-                console.log("Returning user instigating new search; flushing everything related to google maps, we are starting over");
                 persist.liveInfo.googleMapsRequestStatus 			= 
                 persist.liveInfo.googleMapsResponse 				= 
                 persist.liveInfo.locations 							= 
@@ -274,10 +249,6 @@ $(document).ready( function( $ ){
 			$( '.address' ).each(function(index, thisElement ){
 				persist.liveInfo.googleMapsDestinations[index] = thisElement.textContent.replace(/(\r\n|\n|\r|\s+)/gm, " ").trim();
 			});
-			
-			console.log( "Arrays set for request to Google Maps: " );
-			console.log( persist.liveInfo.googleMapsOriginAddresses );
-			console.log( persist.liveInfo.googleMapsDestinations );
 		}catch( error ){
 				persist.test();
 				console.log( localStorage );
@@ -298,7 +269,6 @@ $(document).ready( function( $ ){
 					unitSystem: google.maps.UnitSystem.IMPERIAL
 				}, spoolToJQueryObject);
         } else {
-            console.log("Bypassing request to Google Maps; using info stored in persist.liveInfo.");
             //otherwise, go ahead and run it with the saved data
             spoolToJQueryObject( persist.liveInfo.googleMapsResponse, persist.liveInfo.googleMapsRequestStatus);
         }
@@ -311,7 +281,6 @@ $(document).ready( function( $ ){
             if( status == google.maps.DistanceMatrixStatus.OK ){
 
                 if(  persist.liveInfo.googleMapsResponse != response  ){
-                    console.log("persist status or response don't match current response; setting new values");
                     //store the whole thing so that we can avoid identical reqeusts
                     persist.liveInfo.googleMapsResponse = response;
                     persist.liveInfo.googleMapsRequestStatus = status;
@@ -332,21 +301,15 @@ $(document).ready( function( $ ){
 						var from = origins[ i ];
 						var to = destinations[ j ];
 
-                        //report progress
-                        //console.log("Still spooling to jQuery object: " + from + " to " + to + " is " + distanceTo);
-
                         //attach distances to original mealsites collection or replace if already exists
                         $( '.matchlist_panel' ).eq(j).append('<div id="distance"><p>Distance to this meal site is: <span id="findClosest">' + String( distanceTo ) + '</span></p></div>');
                     }
                 }
-
-                //console.log("Out of spool. Sorting elements...");
                 $( '.matchlist_panel' ).tsort('#findClosest');
 
                 //totally cheap method, but hide the rest... //@todo find a better method or rewrite sort... 
                 //Every sort plugin uses the jQuery DOM manipulation methods to sort, rather then just doing it in regular memory on the $()[] array
                 //And so they requires elements to be in the dom and is a bit restrictive because of it.
-                //console.log('displaying only first element');
                 $( '.matchlist_panel:gt( 0 )' ).hide();
 
                 //finally, display the correct opener for the mealsite panel
@@ -372,7 +335,6 @@ $(document).ready( function( $ ){
 	if( !!persist.liveInfo.userAddress ){
 		try{
 			$( '#addressForm' ).val( persist.liveInfo.userAddress );
-			//console.log("Triggering #send click handler");
 			$( '#send' ).trigger('click');
 		}catch( error ){ console.log( error );}
 	}
@@ -384,7 +346,6 @@ $(document).ready( function( $ ){
 			if( event.which == 13 ){
 				event.stopImmediatePropagation();
 				event.preventDefault();
-				//console.log( event );
 				$( '#send' ).trigger( 'click' );
 			}
 		}catch( error ){ console.log( error ); }
@@ -401,13 +362,8 @@ $(document).ready( function( $ ){
             caption: 'I just donated to The Hunger Task Force!',
             description: 'You can be directed to the donation page of The Hunger Task Force, as well as other features such as being directed to your nearest Milwaukee area meal center using The Hunger App.'
         };
-        //console.log(sendToFeed);
-
+        
         function callback(response ){
-            // log success
-            //console.log("In bragToFriends()");
-            //console.log(response['post_id']);
-
             //@todo react to failure, as well as notify user that feed post now exists.
         }
 
@@ -461,28 +417,12 @@ $(document).ready( function( $ ){
                 var uid = response.authResponse.userID;
                 var accessToken = response.authResponse.accessToken;
 
-                {
-                    //console.log("FB.authResponse follows on next line:");
-                    //console.log(response);
-                }
-
                 FB.api('/me', function(response ){
-
-                    {
-                        //console.log("You're already logged in and your name is " + response.name);
-                        //console.log("FB.api//me response follows on next line:");
-                        //console.log(response);
-                    }
-
-                    
-                    
-
                 });
 
             } else if( response.status === 'not_authorized' ){
 
                 // not_authorized
-                //console.log("Recieved a response of not_authorized.");
                 //send users Facebook Authentication dialogue to login and redirect back to app thereafter
                 top.location.href = 'https://www.facebook.com/dialog/oauth?client_id=374687635931458&redirect_uri=https://apps.facebook.com/forthehungry/'
 
