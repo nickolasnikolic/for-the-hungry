@@ -18,7 +18,7 @@ function Collection(){
 	this.hideBackgroundImage = '-10000px -10000px';
 	this.showBackgroundImage = 'right';
 	
-	//off the bat, set a debug flag (lots of very verbose console messages if set to true)
+	//off the bat, set a debug flag (lots of very verbose console messages if set to true or level3)
 	this.debug = false; //could usefully be true or false and "level2" or "level3"
 	
 	//This object is used EVERYWHERE...

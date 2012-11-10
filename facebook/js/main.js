@@ -152,7 +152,7 @@ $(document).ready( function( $ ){
 
         case 'first' || 'firstSeen' || 1:
 
-            $( '#footer' ).html('<p>If you are in need of emergency food, <em>call the phone number 2-1-1</em> to recieve foodstuffs for your home.</p><p>You will talk to a trained representative first and you may only recieve emergency food <em>once every 30 days.</em></p><p>Once you call, <a class="reminder">click&nbsp;here</a> to have an in-app reminder set.</p>');
+            $( '#footer' ).html('<p>If you are in need of emergency food, <em>call the phone number 2-1-1</em> to receive foodstuffs for your home.</p><p>You will talk to a trained representative first and you may only recieve emergency food <em>once every 30 days.</em></p><p>Once you call, <a class="reminder">click&nbsp;here</a> to have an in-app reminder set.</p>');
 			$( '#footer p' ).each( function( index ){
 					$( this ).prepend( '<div id="num">' +  ++index + '</div>' );
 				});
@@ -185,7 +185,6 @@ $(document).ready( function( $ ){
     }
 
     //do or don't display content that depends upon features, particularly localStorage and sessionStorage    
-
     function chooseWhichTemplate( ){
         //if nothing is available, go ahead and display default template
         //reset footer after setting main content
@@ -298,7 +297,7 @@ $(document).ready( function( $ ){
 					unitSystem: google.maps.UnitSystem.IMPERIAL
 				}, spoolToJQueryObject);
         } else {
-            console.log("Bypassing request to Google Maps; using info stored in persist.liveInfo.");
+            if( persist.debug ) console.log("Bypassing request to Google Maps; using info stored in persist.liveInfo.");
             //otherwise, go ahead and run it with the saved data
             spoolToJQueryObject( persist.liveInfo.googleMapsResponse, persist.liveInfo.googleMapsRequestStatus);
         }
@@ -468,18 +467,14 @@ $(document).ready( function( $ ){
 
                 FB.api('/me', function(response ){
 
-                    {
+                    if( persist.debug ){
                         //console.log("You're already logged in and your name is " + response.name);
                         //console.log("FB.api//me response follows on next line:");
                         //console.log(response);
                     }
-
-                    
-                    
-
                 });
-
-            } else if( response.status === 'not_authorized' ){
+                
+            } else if( response.status === 'not_authorized' ){ //user is logged in but hasn't permitted the app to function in their account
 
                 // not_authorized
                 //console.log("Recieved a response of not_authorized.");
