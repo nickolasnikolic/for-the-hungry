@@ -11,5 +11,6 @@ and can serve as a complete project stub
 
 Project Requirements:
 PHP 5 (no special features are used in this particular branch at this time, so PHP4 will work)
+SSL Available from your host or configured by you (required by Facebook)
 Class 'A' browser with Javascript enabled
  
