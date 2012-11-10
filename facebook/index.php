@@ -6,7 +6,7 @@
 
 <link href="css/reset.css" rel="stylesheet" type="text/css" media="all">
 <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,900italic|The+Girl+Next+Door|Paytone+One' rel='stylesheet' type='text/css'>
-<link href="css/main.css" rel="stylesheet" type="text/css">
+<link href="css/main.css" class="cssfx" rel="stylesheet" type="text/css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnVDczR-kIdOgFv99UmxtmkC6uLLLLeSo&sensor=false"></script>
@@ -15,7 +15,8 @@
 <script src="js/jquery.tinysort.js"></script>
 <script src="js/jquery.dotimeout.js" ></script>
 <script src="js/modernizr.js"></script>
-<script src="js/Collection.js" > </script>
+<script src="js/Collection.js"> </script>
+<script src="js/cssfx.min.js"></script>
 <script src="js/main.js"></script>
 </head>
 
