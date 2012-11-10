@@ -10,7 +10,10 @@ Forks are appreciated; useful too, as this is a basic implementation of the Face
 and can serve as a complete project stub
 
 Project Requirements:
+
 PHP 5.2
+
 SSL Available from your host or configured by you (required by Facebook)
+
 Class 'A' browser with Javascript enabled
  
