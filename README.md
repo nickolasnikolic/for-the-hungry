@@ -1,13 +1,9 @@
-for-the-hungry
+for-the-hungry - with proxy
 ==============
 
-This repository is for the sharing and improvement of the For the Hungry Facebook app.
+This branch is for the full-featured development and improvement of the actual For the Hungry Facebook app.
 
 It was originally created on behalf of the Hunger Task Force of the Greater Milwaukee Area.
-
-Forks are appreciated; useful too, as this is a basic implementation of the Facebook api
-
-and can serve as a complete project stub
 
 Project Requirements:
 
